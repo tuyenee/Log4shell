@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,13 +22,16 @@ public class HelloController {
     }
 
     @PostMapping("/")
-    public String doLogin(@RequestBody String email, @RequestBody String password) {
+    public ModelAndView doLogin(@RequestBody String email) {
         try {
             logger.info("Failed login attempt " + URLDecoder.decode(email, "UTF-8"));
         } catch(UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return "index";
+        ModelAndView aView = new ModelAndView();
+        aView.setViewName("index");
+        aView.addObject("loginResult", "Login failed. Your attempt was logged.");
+        return aView;
     }
 
 }
